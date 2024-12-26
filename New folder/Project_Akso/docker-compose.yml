@@ -1,0 +1,47 @@
+name: 'UASP-AKSO'
+
+services:
+  mysql_server:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: jihansql23
+      MYSQL_DATABASE: Project_Jaa
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+
+  django_server:
+    image: django-docker:8.0.1
+    build: .
+    command: sh -c "while ! nc -z mysql_server 3306; do sleep 1; done; python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql_server:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql_server
+      DB_NAME: Project_Jaa 
+      DB_USER: root
+      DB_PASSWORD: jihansql23
+    networks:
+      - mynetwork
+    restart: always
+
+volumes:
+  mysql_data:
+
+networks:
+  mynetwork:
+    driver: bridge

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+        .anime-card {
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .anime-card h2 {
+            margin-top: 0;
+        }
+        .anime-card p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Anime List</h1>
+
+    <!-- Loop untuk menampilkan semua anime -->
+    {% for anime in anime_list %}
+        <div class="anime-card">
+            <h2>{{ anime.judul }}</h2>
+            <p><strong>Jadwal Tayang:</strong> {{ anime.jadwal_tayang }}</p>
+            <p><strong>Studio:</strong> {{ anime.studio }}</p>
+            <p><strong>Genre:</strong> {{ anime.genre }}</p>
+            <p><strong>Durasi per Episode:</strong> {{ anime.durasi_per_eps }}</p>
+            <p><strong>Sumber:</strong> {{ anime.sumber }}</p>
+            <p><strong>Rating:</strong> {{ anime.rating }}</p>
+            <p><strong>Link:</strong> <a href="{{ anime.link_anime }}" target="_blank">{{ anime.link_anime }}</a></p>
+        </div>
+    {% empty %}
+        <p>No anime found.</p>
+    {% endfor %}
+</body>
+</html>
